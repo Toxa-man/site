@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <script
+			  src="http://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous">
+    </script>
+
+    <style type="text/css">
+      .line-break-and-tab {
+        white-space: pre-wrap;
+      }
+    </style>
+    
+    <title>Leak Checker</title>
+    <script>
+      function parse_result(data) {
+        console.log(data);
+        try {
+          // var data = JSON.parse(json_str);
+          var build = data[0];
+          $("#build_log").html(build.build_log);
+          if (build.build_result == "success"){
+            $("#build_log_btn").removeClass("btn-danger btn-secondary").addClass("btn-success");
+            $("#build_log_btn").text("Build finished successfully");
+            
+            var valgrind = data[1];
+            $("#valgrind_log").html(valgrind.valgrind_log);
+            if (valgrind.valgrind_result == "success"){
+              $("#valgrind_log_btn").removeClass("btn-danger btn-secondary").addClass("btn-success");
+              $("#valgrind_log_btn").text("No leaks detected");
+            } else {
+              $("#valgrind_log_btn").removeClass("btn-success btn-secondary").addClass("btn-danger");
+              $("#collapseTwo").collapse("show");
+              $("#valgrind_log_btn").text("Leakage detected");
+            }
+
+          } else {
+            $("#build_log_btn").removeClass("btn-success btn-secondary").addClass("btn-danger");
+            $("#collapseOne").collapse("show");
+            $("#build_log_btn").text("Build failed");
+            // $("#valgrind_log_btn").text("");
+            $("#valgrind_log_btn").hide();
+          }
+        } catch (e) {
+          console.log(data);
+          $("#collapseOne").collapse("show");
+          $("#collapseOne").html(data);
+        }
+
+      }
+        $(document).ready(function(){
+          $("#sourceCode").val("int main()\n{\n    new int[5]; //leakage example\n    return 0;\n}");
+            $("#run_btn").click(function(){
+              if ($("textarea#sourceCode").val().length){
+                $("#collapseOne").collapse("hide");
+                $("#collapseTwo").collapse("hide");
+                $("#valgrind_log_btn").show();
+                $("#build_log_btn").removeClass("btn-success btn-danger").addClass("btn-secondary");
+                $("#valgrind_log_btn").removeClass("btn-success btn-danger").addClass("btn-secondary");
+                $("#build_log_btn").text("Build log");
+                $("#valgrind_log_btn").text("Valgrind log");
+                $.ajax({
+                url: "/cgi-bin/checking_script.py",
+                type: "POST",
+                data: $("#sourceCode").serialize() + "&" + $("#inputArgs").serialize(),
+                success: function(response){
+                    parse_result(response);
+                    }
+              });
+              }
+
+            });
+        });
+        </script>
+
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col my-3">
+            <a class="btn btn-info" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                How To Use
+            </a>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                  This app is using gcc 8.1 with "-std=c++17" and "-Wall" flags.<br> 
+                  If builded successfully it's running valgrind memory leak checker against binary file. <br>
+                  Its log you can see at "Valgrind" tab.
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class ="row">
+        <div class="col-7">
+            <div class="form-group">
+                <label for="sourceCode">Enter source code:</label>
+                <textarea name="srcCode" class="form-control" id="sourceCode" rows="23" spellcheck="false" onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}"></textarea>
+            </div>
+        </div>
+        <div class="col accordion" id="log_accordion">
+          <div class="card">
+            <!-- <div class="card-header" id="headingOne"> -->
+              <h5 class="mb-0">
+                <button class="btn btn-secondary collapsed" id="build_log_btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      Build log
+                </button>
+              </h5>
+            <!-- </div> -->
+        
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#log_accordion">
+              <div class="card-body" id="build_log">
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <!-- <div class="card-header" id="headingTwo"> -->
+              <h5 class="mb-0">
+                <button class="btn btn-secondary collapsed" id="valgrind_log_btn" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                  Valgrind log
+                </button>
+              </h5>
+            <!-- </div> -->
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#log_accordion">
+              <div class="card-body" id="valgrind_log">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-3">
+              <div class="form-group">
+                  <label for="inputArgs">Input:</label>
+                  <textarea name="input" class="form-control" id="inputArgs" rows="3" spellcheck="false"></textarea>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col">
+              <a name="run_btn" id="run_btn" class="px-3 btn btn-primary" href="#" role="button">Run</a>
+          </div>
+        </div>
+    </div>
+   <br>
+   <div class="footer-copyright text-center py-2">
+     © 2018 Copyright: Anton Kviatkovskii
+  </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+</html>
