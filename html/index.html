@@ -40,7 +40,11 @@
             } else {
               $("#valgrind_log_btn").removeClass("btn-success btn-secondary").addClass("btn-danger");
               $("#collapseTwo").collapse("show");
-              $("#valgrind_log_btn").text("Leakage detected");
+              if (valgrind.valgrind_result == "failed"){
+                $("#valgrind_log_btn").text("Leakage detected");
+              } else if (valgrind.valgrind_result == "process_timeout"){
+                $("#valgrind_log_btn").text("Timeout error");
+              }
             }
 
           } else {
@@ -58,9 +62,11 @@
 
       }
         $(document).ready(function(){
+          $("#loader").hide();
           $("#sourceCode").val("int main()\n{\n    new int[5]; //leakage example\n    return 0;\n}");
             $("#run_btn").click(function(){
               if ($("textarea#sourceCode").val().length){
+                $("#loader").show();
                 $("#collapseOne").collapse("hide");
                 $("#collapseTwo").collapse("hide");
                 $("#valgrind_log_btn").show();
@@ -73,6 +79,7 @@
                 type: "POST",
                 data: $("#sourceCode").serialize() + "&" + $("#inputArgs").serialize(),
                 success: function(response){
+                    $("#loader").hide();
                     parse_result(response);
                     }
               });
@@ -98,6 +105,9 @@
                 </div>
             </div>
         </div>
+        <div class="col-5 py-3" id="loader">
+          <img src="/images/loader.gif">
+        </div>
       </div>
       <div class ="row">
         <div class="col-7">
@@ -108,27 +118,22 @@
         </div>
         <div class="col accordion" id="log_accordion">
           <div class="card">
-            <!-- <div class="card-header" id="headingOne"> -->
               <h5 class="mb-0">
                 <button class="btn btn-secondary collapsed" id="build_log_btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                       Build log
                 </button>
               </h5>
-            <!-- </div> -->
-        
             <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#log_accordion">
               <div class="card-body" id="build_log">
               </div>
             </div>
           </div>
           <div class="card">
-            <!-- <div class="card-header" id="headingTwo"> -->
               <h5 class="mb-0">
                 <button class="btn btn-secondary collapsed" id="valgrind_log_btn" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                   Valgrind log
                 </button>
               </h5>
-            <!-- </div> -->
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#log_accordion">
               <div class="card-body" id="valgrind_log">
               </div>
