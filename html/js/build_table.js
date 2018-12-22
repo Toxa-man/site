@@ -15,11 +15,14 @@ function build_table(selector) {
             var tr_tag = $('<tr/>');
             tr_tag.append($('<th/>').attr('scope', 'row').text(key));
             for (i = 1; i <= lab_count; i++){
-                if (value.indexOf(i) > -1){
-                    tr_tag.append($('<th/>').addClass('text-center').attr('scope', 'col').text('+'));
-                } else {
-                    tr_tag.append($('<th/>').attr('scope', 'col').text(""));
+                var lab_result = "";
+                if (value["labs"].indexOf(i) > -1){
+                    lab_result = "+";
                 }
+                if (i == lab_count){
+                    lab_result = value["course_mark"];
+                } 
+                tr_tag.append($('<th/>').addClass('text-center').attr('scope', 'col').text(lab_result));
             }
             $(tbody).append(tr_tag);
             console.log(key);
