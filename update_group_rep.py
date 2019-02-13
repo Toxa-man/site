@@ -56,5 +56,5 @@ os.chdir("../")
 output_file_name = "data.json"
 with open(output_file_name, mode="w") as text_file:
     text_file.write(json_obj)
-    copyfile(output_file_name, "/var/www/html/" + output_file_name)
+copyfile(output_file_name, "/var/www/html/" + output_file_name)
 
