@@ -50,12 +50,11 @@ for dirname in sorted(os.listdir(os.getcwd())):
 
         os.chdir("../")
         students_dic[dirname] = {"labs" : labs_done, "course_mark" : mark, "fio" : fio}
-        print(fio)
 
 json_obj = json.dumps(students_dic)
 os.chdir("../")
 output_file_name = "data.json"
 with open(output_file_name, mode="w") as text_file:
     text_file.write(json_obj)
-    copyfile(output_file_name, "/var/www/html")
+    copyfile(output_file_name, "/var/www/html/" + output_file_name)
 
