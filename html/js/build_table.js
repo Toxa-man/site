@@ -1,11 +1,10 @@
 function build_table(selector) {
     $.getJSON("data.json", function(data) {
-        // console.log(data);
-        var lab_count = 6;
+        var lab_count = 4;
         var tr_tag = $('<tr/>');
-        tr_tag.append($('<th/>').attr('scope', 'col').text('FIO'));
+        tr_tag.append($('<th/>').attr({scope: 'col', style: 'width: 20%'}).text('ФИО'));
         for (i = 1; i < lab_count; i++){
-            tr_tag.append($('<th/>').attr('scope', 'col').addClass('text-center').text('Лаб. ' + i.toString()));
+            tr_tag.append($('<th/>').attr('scope', 'col').addClass('text-center').text('Лаб. ' + i.toString() ));
         }
         tr_tag.append($('<th/>').attr('scope', 'col').addClass('text-center').text('Курсовая'));
         $(selector).append($('<thead/>').append($(tr_tag)));
@@ -13,7 +12,11 @@ function build_table(selector) {
         var tbody = $('<tbody/>');
         for (const [key, value] of Object.entries(data)) {
             var tr_tag = $('<tr/>');
-            tr_tag.append($('<th/>').attr('scope', 'row').text(key));
+            var fio = key;
+            if (value["fio"]){
+                fio = value["fio"];
+            }
+            tr_tag.append($('<th/>').attr('scope', 'row').text(fio));
             for (i = 1; i <= lab_count; i++){
                 var lab_result = "";
                 if (value["labs"].indexOf(i) > -1){
@@ -25,7 +28,6 @@ function build_table(selector) {
                 tr_tag.append($('<th/>').addClass('text-center').attr('scope', 'col').text(lab_result));
             }
             $(tbody).append(tr_tag);
-            console.log(key);
         }
         $(selector).append(tbody);
 
