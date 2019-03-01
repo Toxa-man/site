@@ -39,7 +39,7 @@ for dirname in sorted(os.listdir(os.getcwd())):
         mark = ""
         fio = ""
         os.chdir(dirname)
-		if os.path.isfile("fio.txt"):
+        if os.path.isfile("fio.txt"):
 	        with open("fio.txt", mode="r") as text_file:
 		        fio = text_file.read().replace("\n", "")
         for i in range(1, course_lab_id + 1):
