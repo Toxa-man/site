@@ -56,14 +56,14 @@
               <br><b>Требования к классу: </b><br>
               Реализовать методы:<br>
               Vector::Vector() //дефолтный конструктор<br>
-              Vector::Vector(unsigned size) //создаёт массив размером size и заполняет его нулями<br>
-              Vector::Vector(usingned size, const T& val) //создаёт массив размером size и запоняет его значением val<br>
+              Vector::Vector(unsigned size) //создаёт массив размером size и заполняет его дефолтными значениями, т.е. T()<br>
+              Vector::Vector(usingned size, const T& val) //создаёт массив размером size и заполняет его значением val<br>
               unsigned Vector::size() //возвращает размер массива<br>
               void Vector::resize(unsined size) // приравнивает размера массива к size; если новый размер больше старого - новые элементы заполнить нулями<br>
               bool Vector::insert(unsigned pos, const T& val) //вставляет val в позицию pos; возвращает true | false в зависимости от успеха операции<br>
-              void Vector::push_back(const T& val) //добавляет val в конце массива<br>
+              void Vector::push_back(const T& val) //добавляет val в конец массива<br>
               bool Vector::contains(const T& val) //возвращает true если val присуствует в массиве и false в противном случае<br>
-              ??? Vector::operator [](unsinged index) // обращение к элементу с индексом index. При этом должно быть возможно как чтение, так и <b>запись</b><br>
+              ??? Vector::operator [](unsinged index) // обращение к элементу с индексом index. При этом должно быть возможно как читать значение, так и <b>изменять</b> его<br>
               int Vector::find(const T& val) //возвращает индекс первого вхождения val в массив или -1 в случае его отсутствия<br>
               T* Vector::data() //возвращает указатель на внутренний буфер<br>
               А так же все необходимые функции для предотвращения проблем с памятью: copy-constructor, assigment operator, destructor<br>
