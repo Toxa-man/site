@@ -42,7 +42,7 @@
               $("#valgrind_log_btn").removeClass("btn-success btn-secondary").addClass("btn-danger");
               $("#collapseTwo").collapse("show");
               if (valgrind.valgrind_result == "failed"){
-                $("#valgrind_log_btn").text("Leakage detected");
+                $("#valgrind_log_btn").text("Valgrind detected error");
               } else if (valgrind.valgrind_result == "process_timeout"){
                 $("#valgrind_log_btn").text("Timeout error");
               }
