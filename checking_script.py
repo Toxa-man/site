@@ -15,7 +15,7 @@ def check_code(return_code):
 cgitb.enable()
 
 print ("Content-Type: application/json, charset=utf-8\r\n\r\n")
-# print ("Content-Type: text/html, charset=utf-8\r\n\r\n")
+#print ("Content-Type: text/html, charset=utf-8\r\n\r\n")
 data = cgi.FieldStorage()
 
 sourceCode = data['srcCode'].value
@@ -55,7 +55,16 @@ if compile_return_code == 0:
         root = tree.getroot()
         errorsList = []
         for error in root.findall("error"):
-            errorsList.append(error.find("xwhat").find("text").text)
+            if error.find("xwhat") is not None:
+                errorsList.append(error.find("xwhat").find("text").text)
+
+            if error.find("what") is not None:
+                errorsList.append(error.find("what").text)
+            
+            if error.find("auxwhat") is not None:
+                errorsList.append(error.find("auxwhat").text)
+
+
         errors_str = "<br>".join(errorsList)
     except TimeoutExpired as inst:
         errors_str = "Process timeout error. May be you forgot to remove blocking operations?"
