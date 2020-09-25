@@ -1,6 +1,6 @@
 function build_table(selector) {
     $.getJSON("data.json", function(data) {
-        var lab_count = 4;
+        var lab_count = 6;
         var tr_tag = $('<tr/>');
         tr_tag.append($('<th/>').attr({scope: 'col', style: 'width: 20%'}).text('ФИО'));
         for (i = 1; i < lab_count; i++){

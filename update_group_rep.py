@@ -5,8 +5,8 @@ from collections import OrderedDict
 from shutil import copyfile
 
 #CHANGE WITH NEW COURSE
-course_lab_id = 4 
-repo_name = "labWorks_8373_2019"
+course_lab_id = 6 
+repo_name = "labWorks-2020-0372"
 
 
 
