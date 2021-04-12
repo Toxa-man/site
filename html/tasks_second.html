@@ -55,23 +55,22 @@
         <section class="resume-section p-3 p-lg-5 d-flex d-column" id="lab_1">
           <div class="my-auto">
             <h3 class="mb-0">Лаб. работа №1</h3>
-            <p class="lead mb-5">Разработать класс реализующий динамический массив и протестировать его функционал<br>
+            <p class="lead mb-5">Разработать класс реализующий линейный список и протестировать его функционал<br>
               <br><b>Требования к классу: </b><br>
               Реализовать методы:<br>
-              Vector::Vector() //дефолтный конструктор<br>
-              Vector::Vector(unsigned size) //создаёт массив размером size и заполняет его дефолтными значениями, т.е. T()<br>
-              Vector::Vector(usingned size, const T& val) //создаёт массив размером size и заполняет его значением val<br>
-              unsigned Vector::size() //возвращает размер массива<br>
-              void Vector::resize(unsined size) // приравнивает размера массива к size; если новый размер больше старого - новые элементы заполнить нулями<br>
-              bool Vector::insert(unsigned pos, const T& val) //вставляет val в позицию pos; возвращает true | false в зависимости от успеха операции<br>
-              void Vector::push_back(const T& val) //добавляет val в конец массива<br>
-              bool Vector::contains(const T& val) //возвращает true если val присуствует в массиве и false в противном случае<br>
-              ??? Vector::operator [](unsinged index) // обращение к элементу с индексом index. При этом должно быть возможно как читать значение, так и <b>изменять</b> его<br>
-              int Vector::find(const T& val) //возвращает индекс первого вхождения val в массив или -1 в случае его отсутствия<br>
-              T* Vector::data() //возвращает указатель на внутренний буфер<br>
+              List::List() //дефолтный конструктор<br>
+              List::List(unsigned size) //создаёт список размером size и заполняет его дефолтными значениями, т.е. T()<br>
+              List::List(usingned size, const T& val) //создаёт список размером size и заполняет его значением val<br>
+              unsigned List::size() //возвращает размер списока<br>
+              void List::resize(unsined size) // приравнивает размера списока к size; если новый размер больше старого - новые элементы заполнить нулями<br>
+              bool List::insert(unsigned pos, const T& val) //вставляет val в позицию pos; возвращает true | false в зависимости от успеха операции<br>
+              void List::push_back(const T& val) //добавляет val в конец списока<br>
+              bool List::contains(const T& val) //возвращает true если val присуствует в списоке и false в противном случае<br>
+              ??? List::operator [](unsinged index) // обращение к элементу с индексом index. При этом должно быть возможно как читать значение, так и <b>изменять</b> его<br>
+              int List::find(const T& val) //возвращает индекс первого вхождения val в список или -1 в случае его отсутствия<br>
               А так же все необходимые функции для предотвращения проблем с памятью: copy-constructor, assigment operator, destructor<br>
               <br><b>Примечания:</b><br>
-              Vector - название для примера, вы можете создать класс с другим именем<br>
+              List - название для примера, вы можете создать класс с другим именем<br>
               ??? - вы должны сами придумать какой тип использовать<br>
               T - алиас для типа, который вы задаёте сами перед объявлением класса используя следующий синтаксис: using T = int; где вместо int можно использовать любой другой тип<br>
             </p>
